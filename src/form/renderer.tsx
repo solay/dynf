@@ -1,6 +1,8 @@
 // FormRenderer.tsx
 import React from "react";
 import { Field, FormSchema } from "./schema";
+import { useDispatch, useSelector } from "react-redux";
+import { getPerson, update } from "../store/slices/formSlice";
 
 type Values = Record<string, any>;
 type Errors = Record<string, string | undefined>;
@@ -92,41 +94,46 @@ export const FormRenderer: React.FC<{
   initialValues?: Values;
   onSubmit?: (values: Values) => void;
 }> = ({ schema, initialValues, onSubmit }) => {
-  const [values, setValues] = React.useState<Values>(initialValues ?? {});
+
+  //const [values, setValues] = React.useState<Values>(initialValues ?? {});
   const [errors, setErrors] = React.useState<Errors>({});
 
+  const dispatch = useDispatch();
+
+  const person = useSelector(getPerson);
+  
   const handleChange = (id: string, v: any) => {
-    setValues((prev) => ({ ...prev, [id]: v }));
+    dispatch(update({ path: id, value: v }));
+    //setValues((prev) => ({ ...prev, [id]: v }));
   };
 
   const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    const errs = validate(schema.fields, values);
-    setErrors(errs);
-    if (Object.keys(errs).length === 0) onSubmit?.(values);
+    //e.preventDefault();
+    //const errs = validate(schema.fields, values);
+    //setErrors(errs);
+    //if (Object.keys(errs).length === 0) onSubmit?.(values);
   };
 
   return (
     <form onSubmit={handleSubmit} style={{ maxWidth: 520 }}>
       {schema.fields.map((field) => {
-        if (!isVisible(field, values)) return null;
-        const Component = registry[field.type];
+        //if (!isVisible(field, values)) return null;
         
+        const Component = registry[field.type];
+
         if (!Component) return <div key={field.id}>Unknown field type: {field.type}</div>;
         return (
           <Component
             key={field.id}
             field={field}
-            value={values[field.id]}
+            value={person[field.id as keyof typeof person]}
             onChange={handleChange}
             error={errors[field.id]}
           />
         );
       })}
+      
       <button type="submit">Submit</button>
-      <pre style={{ marginTop: 12, background: "#f7f7f7", padding: 8 }}>
-        {JSON.stringify(values, null, 2)}
-      </pre>
     </form>
   );
 };

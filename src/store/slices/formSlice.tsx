@@ -34,6 +34,9 @@ export const formSlice = createSlice({
   reducers: {
     update: (state, action: PayloadAction<UpdatePath>) => {
         var x = action.payload;
+
+        console.log('update', x );
+
         state.current[x.path as keyof Person] = x.value;
     }
   },
