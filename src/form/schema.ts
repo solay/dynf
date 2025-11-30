@@ -28,7 +28,7 @@ export type FormSchema = {
 
 export const schema: FormSchema = {
   fields: [
-    { id: "fullName", type: "text", label: "Full name", required: true, placeholder: "John Doe" },
+    { id: "name", type: "text", label: "Full name", required: true, placeholder: "John Doe" },
     { id: "country", type: "select", label: "Country", required: true,
       options: [
         { label: "Germany", value: "DE" },
@@ -38,6 +38,6 @@ export const schema: FormSchema = {
     },
     { id: "newsletter", type: "checkbox", label: "Subscribe to newsletter?" },
     { id: "city", type: "text", label: "City", visibleWhen: { field: "country", equals: "DE" } },
-    { id: "birthDate", type: "date", label: "Birth date" },
+    { id: "birthday", type: "date", label: "Birth date" },
   ]
 };

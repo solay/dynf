@@ -111,6 +111,7 @@ export const FormRenderer: React.FC<{
       {schema.fields.map((field) => {
         if (!isVisible(field, values)) return null;
         const Component = registry[field.type];
+        
         if (!Component) return <div key={field.id}>Unknown field type: {field.type}</div>;
         return (
           <Component
